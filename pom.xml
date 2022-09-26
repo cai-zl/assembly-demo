@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>2.7.4</version>
+        <relativePath/> <!-- lookup parent from repository -->
+    </parent>
+    <groupId>com.example</groupId>
+    <artifactId>assembly-demo</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+    <name>assembly-demo</name>
+    <description>assembly-demo</description>
+    <properties>
+        <java.version>11</java.version>
+    </properties>
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <finalName>${project.artifactId}</finalName>
+
+        <plugins>
+            <!--spring boot repackage，依赖 maven-jar-plugin 打包的jar包 重新打包成 spring boot 的jar包-->
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <layout>ZIP</layout>
+                    <!--重写包含依赖，包含不存在的依赖，jar里没有pom里的依赖-->
+                    <includes>
+                        <include>
+                            <groupId>null</groupId>
+                            <artifactId>null</artifactId>
+                        </include>
+                    </includes>
+                    <!--使用外部配置文件，jar包里没有资源文件-->
+                    <addResources>true</addResources>
+                    <outputDirectory>${project.build.directory}</outputDirectory>
+                </configuration>
+
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <configuration>
+                    <archive>
+                        <manifest>
+                            <!-- TODO 运行jar包时运行的主类，要求类全名-->
+                            <mainClass>com.example.AssemblyDemoApplication</mainClass>
+                            <!-- 指定依赖的时候声明前缀 -->
+                            <classpathPrefix>lib/</classpathPrefix>
+                            <!-- 是否指定项目classpath下的依赖 -->
+                            <addClasspath>true</addClasspath>
+                            <!--jar包不包含唯一版本标识-->
+                            <useUniqueVersions>false</useUniqueVersions>
+                        </manifest>
+                        <manifestEntries>
+                            <!--MANIFEST.MF 中 Class-Path 加入资源文件目录-->
+                            <Class-Path>./resources/</Class-Path>
+                        </manifestEntries>
+                    </archive>
+                    <excludes>
+                        <!-- 去掉不需要打进 jar 的配置文件 -->
+                        <exclude>**/*.yml</exclude>
+                        <exclude>**/*.xml</exclude>
+                        <exclude>**/*.txt</exclude>
+                        <exclude>**/*.sh</exclude>
+                        <exclude>**/bin</exclude>
+                        <exclude>**/config</exclude>
+                    </excludes>
+                    <outputDirectory>${project.build.directory}</outputDirectory>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>copy-dependencies</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>copy-dependencies</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>
+                                ${project.build.directory}/lib/
+                            </outputDirectory>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <!--使用插件-->
+                <artifactId>maven-assembly-plugin</artifactId>
+                <configuration>
+                    <!--自定义的configuration配置后，将会生成一个demo-demo.jar 文件在目录 output 下，其中前一个demo
+                    来自finalName，后一个demo来自assembly descriptor中的id，其中的内容和默认的打包出来的jar类似，
+                    如果只想有finalName，则增加配置：<appendAssemblyId/>-->
+                    <appendAssemblyId>false</appendAssemblyId>
+                    <!--输出路径-->
+                    <outputDirectory>${project.build.directory}/</outputDirectory>
+                    <!--描述文件位置-->
+                    <descriptors>
+                        <descriptor>src/main/resources/builder/assembly.xml</descriptor>
+                    </descriptors>
+                </configuration>
+                <!--配置执行器-->
+                <executions>
+                    <execution>
+                        <id>make-assembly</id>
+                        <!--绑定到package生命周期阶段上-->
+                        <phase>package</phase>
+                        <goals>
+                            <!--只运行一次-->
+                            <goal>single</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+        </plugins>
+    </build>
+
+</project>
