@@ -2,7 +2,7 @@
           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
           xsi:schemaLocation="http://maven.apache.org/ASSEMBLY/2.1.1
           http://maven.apache.org/xsd/assembly-2.1.1.xsd">
-    <!--标识符，添加到生成文件名称的后缀符。如果指定 id 的话，目标文件则是 ${artifactId}-${id}.zip-->
+    <!-- TODO 标识符，添加到生成文件名称的后缀符。如果指定 id 的话，目标文件则是 ${artifactId}-${id}.zip-->
     <id>assembly-demo</id>
     <formats>
         <!--指定打包类型: zip、tar、tar.gz(or tgz)、tar.bz2 (or tbz2)、tar.snappy 、tar.xz (or txz)、jar、dir、war-->
