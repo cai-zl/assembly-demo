@@ -35,8 +35,8 @@
     </dependencies>
 
     <build>
+        <!--   打包配置，程序本身与依赖、配置分离     -->
         <finalName>${project.artifactId}</finalName>
-
         <plugins>
             <!--spring boot repackage，依赖 maven-jar-plugin 打包的jar包 重新打包成 spring boot 的jar包-->
             <plugin>

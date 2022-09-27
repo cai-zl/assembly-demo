@@ -22,8 +22,8 @@
             <outputDirectory>/resources</outputDirectory>
             <!-- 指定排除的文件 -->
             <excludes>
-                <exclude>**/bin</exclude>
-                <exclude>**/builder</exclude>
+                <exclude>/bin/</exclude>
+                <exclude>/builder/</exclude>
             </excludes>
         </fileSet>
         <fileSet>

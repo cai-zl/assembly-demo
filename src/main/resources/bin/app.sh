@@ -1,5 +1,3 @@
-
-
 ENV=dev
 RUNNING_USER=root
 ADATE=`date +%Y%m%d%H%M%S`
