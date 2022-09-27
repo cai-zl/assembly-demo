@@ -18,6 +18,12 @@ assembly插件打zip包示例，lib、resources与自身程序目录分类，方
 1.  将resources下的目录bin、builder、logback.xml复制到自己的项目
 2.  将pom.xml中的<build/>表情复制到自己的项目
 3.  修改复制内容中的TODO注释
+4.  解压打包后的zip包
+5.  bin/app.sh start    # 启动
+    bin/app.sh stop     # 停止
+    bin/app.sh restart  # 重启
+    bin/app.sh status   # 运行状态
+    bin/app.sh dump     # jvm占用信息,可参考优化jvm参数    
 
 #### 参与贡献
 
