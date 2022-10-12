@@ -54,6 +54,12 @@
                     <!--使用外部配置文件，jar包里没有资源文件-->
                     <addResources>true</addResources>
                     <outputDirectory>${project.build.directory}</outputDirectory>
+                    <excludes>
+                        <exclude>
+                            <groupId>org.projectlombok</groupId>
+                            <artifactId>lombok</artifactId>
+                        </exclude>
+                    </excludes>
                 </configuration>
 
             </plugin>
