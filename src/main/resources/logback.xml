@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
     <!--<include resource="org/springframework/boot/logging/logback/base.xml"/>-->
-    <!-- TODO 项目的appid -->
-    <property name="APP_ID" value="gcs-hy-struct"/>
+    <!-- TODO 日志文件名称 -->
+    <property name="APP_ID" value="assembly-demo"/>
     <property name="LOG_PATH" value="../logs"/>
     <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>

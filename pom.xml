@@ -8,11 +8,17 @@
         <version>2.7.4</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
+    <!--    TODO 修改包名 -->
     <groupId>com.example</groupId>
+    <!--    TODO 修改应用名 -->
     <artifactId>assembly-demo</artifactId>
+    <!--    TODO 修改版本号 -->
     <version>0.0.1-SNAPSHOT</version>
+    <!--    TODO 修改名称 -->
     <name>assembly-demo</name>
+    <!--    TODO 修改描述 -->
     <description>assembly-demo</description>
+
     <properties>
         <java.version>11</java.version>
     </properties>
