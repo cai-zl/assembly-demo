@@ -1,14 +1,11 @@
 ENV=dev
 RUNNING_USER=root
 ADATE=`date +%Y%m%d%H%M%S`
-
 #TODO 服务名
 SERVER_NAME=assembly-demo
-
 #解析参数
 #Debug模式
 XDEBUG=""
-
 number=65              #定义一个退出值
 index=1                    #定义一个计数器
 if [ -z "$1" ];then                           #对用户输入的参数做判断，如果未输入参数则返回脚本的用法并退出，退出值65
@@ -34,11 +31,7 @@ do
    echo "arg: $index = $arg"
    let index+=1
 done
-
-
-
 APP_HOME=`pwd`
-
 dirname $0|grep "^/" >/dev/null
 if [ $? -eq 0 ];then
    APP_HOME=`dirname $0`
@@ -51,31 +44,22 @@ else
         APP_HOME=`dirname $0|sed "s#^#$APP_HOME/#"`
     fi
 fi
-
 if [ ! -d "$APP_HOME/../logs" ];then
   mkdir $APP_HOME/../logs
 fi
-
 LOG_PATH=$APP_HOME/../logs/$SERVER_NAME.out
 GC_LOG_PATH=$APP_HOME/../logs/gc-$SERVER_NAME-$ADATE.log
 #JMX监控需用到
 JMX="-Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.port=1091 -Dcom.sun.management.jmxremote.ssl=false -Dcom.sun.management.jmxremote.authenticate=false"
 #JVM参数
 JVM_OPTS="-Dname=$SERVER_NAME -Djeesuite.configcenter.profile=$ENV -Djava.awt.headless=true -Djava.net.preferIPv4Stack=true -Duser.timezone=Asia/Shanghai -Xms512M -Xmx512M -XX:PermSize=256M -XX:MaxPermSize=512M -XX:+HeapDumpOnOutOfMemoryError -XX:NewRatio=1 -XX:SurvivorRatio=30 -XX:+UseParallelGC -XX:+UseParallelOldGC"
-
 if [ ! -z "$XDEBUG" ];then
    JVM_OPTS="$JVM_OPTS  -Xdebug -Xrunjdwp:transport=dt_socket,address=8001,server=y,suspend=n"
 fi
-
 JAR_FILE=../lib/$SERVER_NAME.jar
-
-
 APP_FILE_PATH="../lib,../resources"
 APP_PATH="-Dspring.config.location=../resources/application.yml -Dloader.path=$APP_FILE_PATH"
-
 pid=0
-
-
 start(){
   checkpid
   if [ ! -n "$pid" ]; then
@@ -91,10 +75,7 @@ start(){
   else
       echo "$SERVER_NAME is runing PID: $pid"   
   fi
-
 }
-
-
 status(){
    checkpid
    if [ ! -n "$pid" ]; then
@@ -105,11 +86,9 @@ status(){
      tail -f $LOG_PATH
    fi 
 }
-
 checkpid(){
     pid=`ps -ef |grep $JAR_FILE |grep -v grep |awk '{print $2}'`
 }
-
 stop(){
     checkpid
     if [ ! -n "$pid" ]; then
@@ -120,7 +99,6 @@ stop(){
       kill $pid
     fi 
 }
-
 restart(){
     stop 
     sleep 1s
@@ -137,9 +115,7 @@ dump(){
     if [ ! -d $DATE_DIR ]; then
         mkdir $DATE_DIR
     fi
-    
     echo  "Dumping the $SERVER_NAME ...\c"
-    
     PIDS=`ps -ef | grep java | grep $JAR_FILE |awk '{print $2}'`
     for PID in $PIDS ; do
         jstack $PID > $DATE_DIR/jstack-$PID.dump 2>&1
@@ -161,7 +137,6 @@ dump(){
         echo -e  ".\c"
         fi
     done
-    
     if [ -r /bin/netstat ]; then
     /bin/netstat -an > $DATE_DIR/netstat.dump 2>&1
     echo -e  "netstat.dump ..."
@@ -190,12 +165,10 @@ dump(){
     /usr/bin/uptime > $DATE_DIR/uptime.dump 2>&1
     echo -e  ".\c"
     fi
-    
     echo "OK!"
     echo "DUMP: $DATE_DIR"
 }
-
-case $1 in  
+case $1 in
           start) start;;  
           stop)  stop;; 
           restart)  restart;;  
